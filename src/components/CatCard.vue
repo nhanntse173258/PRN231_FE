@@ -3,7 +3,7 @@
       <img :src="cat.image || 'placeholder.jpg'" alt="cat image" />
       <h3>{{ cat.name }}</h3>
       <p>{{ cat.description }}</p>
-      <router-link :to="'/adopt/' + cat.id" class="adopt-button">Adopt Me</router-link>
+      <router-link :to="`/adopt/application/${cat.id}`" class="adopt-button">Adopt Me</router-link>
     </div>
   </template>
   

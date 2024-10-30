@@ -3,7 +3,7 @@
       <section class="hero">
         <h1>Welcome to Cat Adoption</h1>
         <p>Find your perfect feline friend today!</p>
-        <router-link to="/adopt" class="cta-button">Adopt a Cat</router-link>
+        <router-link to="/adopt/application" class="cta-button">Adopt a Cat</router-link>
       </section>
   
       <section class="featured-cats">
