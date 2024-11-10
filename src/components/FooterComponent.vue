@@ -3,15 +3,15 @@
       <p>&copy; 2024 Cat Adoption. All rights reserved.</p>
       <p><a href="/privacy-policy">Privacy Policy</a></p>
     </footer>
-  </template>
+</template>
   
-  <script>
+<script>
   export default {
     name: 'FooterComponent'
   }
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
   .footer {
     background-color: #333;
     color: white;
@@ -25,5 +25,5 @@
     color: #ffab00;
     text-decoration: none;
   }
-  </style>
+</style>
   

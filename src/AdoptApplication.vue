@@ -8,6 +8,11 @@
         </div>
   
         <div class="form-group">
+          <label for="userId">User ID</label>
+          <input type="number" v-model="userId" id="userId" disabled />
+        </div>
+
+        <div class="form-group">
           <label for="adoptionFee">Adoption Fee</label>
           <input type="number" v-model="applicationData.adoptionFee" id="adoptionFee" disabled />
         </div>
@@ -30,24 +35,47 @@
   
   <script>
   import { ref, reactive } from 'vue';
-  import { useRoute } from 'vue-router';
+  import { useRoute, useRouter } from 'vue-router';
   import api from './api';
+  import { jwtDecode } from 'jwt-decode';
 
   export default {
-    name: 'AdoptionApplicationPage',
-    setup() {
+      name: 'AdoptionApplicationPage',
+      setup() {
       const route = useRoute();
-      const catId = parseInt(route.params.id);  // Extracts catId from the route
-      const userId = 1; // Assume the current user ID is known (e.g., from an auth system)
-  
+      const router = useRouter();
+
+      const catId = parseInt(route.params.id); // Extracts catId from the route
+      const token = localStorage.getItem('jwt');
+      const message = ref('');
+
+      let userId = null;
+
+      if (token) {
+        try 
+        {
+          const decoded = jwtDecode(token);
+          userId = decoded.unique_name;
+        } 
+        catch (error) 
+        {
+          console.error("Failed to decode token:", error);
+          message.value = 'Invalid or expired token. Please log in again.';
+          router.push('/login'); // Redirect to login if token is invalid
+        }
+      } 
+      else {
+        message.value = 'Please log in to access this page.';
+        router.push('/login'); // Redirect to login if no token is found
+      }
+
       const applicationData = reactive({
-        adoptionFee: 100000,
+        userId: userId,
+        adoptionFee: 0,
         applicationDate: new Date().toISOString().split('T')[0], // Default to today's date
         adoptionDate: null,
       });
-  
-      const message = ref('');
-  
+
       const submitApplication = async () => {
         try {
           const response = await api.post(`/adoptionApplications`, {
@@ -57,15 +85,18 @@
             applicationDate: applicationData.applicationDate,
             adoptionDate: applicationData.adoptionDate,
           });
-          message.value = 'Application submitted successfully!';
+
+          if (response.data.data) message.value = 'Application submitted successfully!';
+          console.log(response);
         } catch (error) {
           message.value = 'Failed to submit application. Please try again.';
           console.error(error);
         }
       };
-  
+
       return {
         catId,
+        userId,
         applicationData,
         submitApplication,
         message,
