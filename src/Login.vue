@@ -11,6 +11,7 @@
         <input type="password" v-model="passwordHash" id="password" required />
       </div>
       <button type="submit">Login</button>
+      <p>Not having one? <router-link to="./register">Register</router-link> an account now</p>
     </form>
 
     <!-- Display error message if any -->

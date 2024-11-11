@@ -9,6 +9,7 @@
         <div class="cats-buttons">
           <router-link to="/adopt" class="cta-button">Adopt a Cat</router-link>
           <router-link v-if="isStaff" to="/cat/create" class="cta-button">Add a Cat</router-link>
+          <router-link v-if="isStaff" to="/adopt/application" class="cta-button">View Applications</router-link>
         </div>
       </section>
   
