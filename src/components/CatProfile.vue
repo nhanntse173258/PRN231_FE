@@ -16,6 +16,7 @@
     </div>
     
     <br />
+    <router-link style="margin-right:2%" :to="`/adopt/application/send/${catId}`" class="back-button">Adopt this Cat</router-link>
     <router-link to="/" class="back-button">Back to Home</router-link>
   </div>
   

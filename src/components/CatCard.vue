@@ -6,7 +6,7 @@
     <p>{{ cat.age || 'Unknown.' }} year(s) old</p>
 
     <div class="card-button">
-      <router-link :to="`/adopt/application/${cat.catId}`" class="adopt-button">Adopt Me</router-link>
+      <router-link :to="`/adopt/application/send/${cat.catId}`" class="adopt-button">Adopt Me</router-link>
       <br>
       <router-link :to="`/cat-profile/${cat.catId}`" class="view-profile-button">View Profile</router-link>
     </div>
