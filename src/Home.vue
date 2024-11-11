@@ -5,6 +5,7 @@
         <p>Find your perfect feline friend today!</p>
         <router-link to="/adopt" class="cta-button">Adopt a Cat</router-link>
         <router-link v-if="isStaff" to="/cat/create" class="cta-button">Add a Cat</router-link>
+        <router-link v-if="isStaff" to="/appointment/create" class="cta-button">Add a Appointment</router-link>
       </section>
   
       <section class="featured-cats">
