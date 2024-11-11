@@ -9,11 +9,8 @@ import CatProfile from './components/CatProfile.vue';
 import CreateCat from './CreateCat.vue';
 import CreateAppointment from './CreateAppointment.vue';
 import CreateCatProfile from './CreateCatProfile.vue';
-<<<<<<< Updated upstream
-import ViewApplications from './ViewApplications.vue';
-=======
+import ViewApplication from './ViewApplication.vue';
 import AddContract from './AddContract.vue';
->>>>>>> Stashed changes
 
 const routes = [
   { path: '/', component: Home },
@@ -21,7 +18,7 @@ const routes = [
   { path: '/login', component: Login },
   { path: '/register', component: Register },
   { path: '/adopt/application/send/:id', component: AdoptApplication },
-  { path: '/adopt/application/', component: ViewApplications },
+  { path: '/adopt/application/', component: ViewApplication },
   { path: '/cat-profile/:catId', component: CatProfile, props: true },
   { path: '/cat-profile/create/:id', component: CreateCatProfile, props: true},
   { path: '/cat/create', component: CreateCat },
