@@ -78,7 +78,7 @@
 
         const submitApplication = async () => {
           try {
-            const response = await api.post(`/adoptionApplications`, {
+            const response = await api.post(`/adoption-applications`, {
               catId: catId,
               adopterId: userId,
               adoptionFee: applicationData.adoptionFee,
@@ -86,7 +86,7 @@
               adoptionDate: applicationData.adoptionDate,
             });
 
-            if (response.data.data) message.value = 'Application submitted successfully!';
+            message.value = 'Application submitted successfully!';
             console.log(response);
           } catch (error) {
             message.value = 'Failed to submit application. Please try again.';
