@@ -106,10 +106,10 @@
   }
   
   li {
-    background-color: #050000;
-    margin-bottom: 10px;
+    margin: 10px 0;
     padding: 10px;
-    border-radius: 5px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
   }
   </style>
   

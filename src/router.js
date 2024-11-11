@@ -9,7 +9,7 @@ import CatProfile from './components/CatProfile.vue';
 import CreateCat from './CreateCat.vue';
 import CreateCatProfile from './CreateCatProfile.vue';
 import AdopterHistory from './AdopterHistory.vue';
-import ViewApplications from './ViewApplications.vue';
+import ViewApplications from './ViewApplication.vue';
 
 
 const routes = [
