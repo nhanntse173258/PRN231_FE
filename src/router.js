@@ -10,6 +10,7 @@ import CreateCat from './CreateCat.vue';
 import CreateCatProfile from './CreateCatProfile.vue';
 import AdopterHistory from './AdopterHistory.vue';
 import ViewApplications from './ViewApplication.vue';
+import TestImageUploads from './TestImageUpload.vue';
 
 
 const routes = [
@@ -23,6 +24,7 @@ const routes = [
   { path: '/cat-profile/create/:id', component: CreateCatProfile, props: true},
   { path: '/cat/create', component: CreateCat },
   { path: '/adopter-history', component: AdopterHistory },
+  {path: '/upload-image', component: TestImageUploads},
 ]
 
 const router = createRouter({
