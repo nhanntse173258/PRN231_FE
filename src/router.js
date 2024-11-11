@@ -8,6 +8,7 @@ import AdoptApplication from './AdoptApplication.vue';
 import CatProfile from './components/CatProfile.vue';
 import CreateCat from './CreateCat.vue';
 import CreateCatProfile from './CreateCatProfile.vue';
+import AdopterHistory from './AdopterHistory.vue';
 
 const routes = [
   { path: '/', component: Home },
@@ -18,6 +19,7 @@ const routes = [
   { path: '/cat-profile/:catId', component: CatProfile, props: true },
   { path: '/cat-profile/create/:id', component: CreateCatProfile, props: true},
   { path: '/cat/create', component: CreateCat },
+  { path: '/adopter-history', component: AdopterHistory },
 ]
 
 const router = createRouter({

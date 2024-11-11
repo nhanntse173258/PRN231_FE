@@ -9,6 +9,9 @@
         <li><router-link to="/contact">Contact</router-link></li>
         <!-- Check if the user is logged in -->
         <li v-if="isLoggedIn">
+          <router-link to="/adopter-history">Adopter History</router-link> <!-- New link -->
+        </li>
+        <li v-if="isLoggedIn">
           <button @click="logout">Logout</button>
         </li>
         <li v-else>
