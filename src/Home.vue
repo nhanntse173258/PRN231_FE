@@ -9,6 +9,7 @@
           <router-link to="/adopt" class="cta-button">Adopt a Cat</router-link>
           <router-link v-if="isStaff" to="/cat/create" class="cta-button">Add a Cat</router-link>
           <router-link v-if="isStaff" to="/adopt/application" class="cta-button">View Applications</router-link>
+          <router-link v-else-if="userId" :to="`/adopt/application/user/${userId}`" class="cta-button">My Applications</router-link>
         </div>
       </section>
   
@@ -24,7 +25,7 @@
   <script>
   import CatCard from './components/CatCard.vue';
   import api from './api';
-
+  import { jwtDecode } from 'jwt-decode';
   export default {
     name: 'Home',
     components: {
@@ -33,12 +34,16 @@
     
     data() {
       return {
+        userId: null,
         cats: [], // Initialize an empty array for cats
         isStaff: false,
       };
     },
     created() {
       if (localStorage.getItem('userRole') === 'Staff') this.isStaff = true;
+      
+      const token = localStorage.getItem('jwt');
+      this.userId = token ? jwtDecode(token).unique_name : null;
 
       // Fetch cats data
       api.get('/cats?page=1&pageSize=2')

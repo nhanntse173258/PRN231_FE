@@ -8,6 +8,8 @@
     <p><strong>Vaccination Status:</strong> {{ catData.vaccinationStatus }}</p>
     <p><strong>Description:</strong> {{ catData.description }}</p>
     
+    <router-link v-if="isStaff" :to="`./create/${catId}?isEdit=1&profileId=${catData.profileId}`" class="back-button">Edit</router-link>
+
     <div>
       <strong>Gallery:</strong>
       <div class="gallery">
@@ -16,8 +18,8 @@
     </div>
     
     <br />
-    <router-link style="margin-right:2%" :to="`/adopt/application/send/${catId}`" class="back-button">Adopt this Cat</router-link>
-    <router-link to="/" class="back-button">Back to Home</router-link>
+    <router-link v-if="!sent" style="margin-right:2%" :to="`/adopt/application/send/${catId}`" class="back-button">Adopt this Cat</router-link>
+    <router-link to="/adopt" class="back-button">Back to Home</router-link>
   </div>
   
   <!-- Show if catData is empty or doesn't have an id -->
@@ -31,17 +33,35 @@
 import { ref, onMounted, computed } from 'vue';
 import api from '../api';
 import { useRoute } from 'vue-router';
-
+import { jwtDecode } from 'jwt-decode';
 export default {
   name: 'CatProfile',
   props: [
-    'catId'
+    'catId',
   ],
 
   setup(props) {
     const route = useRoute(); // Access the current route
 
     const catId = route.params.id; // Get the catId from the route
+    const sent = ref(false);
+    const token = localStorage.getItem('jwt');
+    const userId = token ? jwtDecode(token).unique_name : null;
+
+    // Check if there's an existing adoption application for this user and cat
+    onMounted(async () => {
+      if (userId) {
+        try {
+          const response = await api.get(`/adoption-applications/by-adopter-and-cat/${userId}?catId=${props.catId}`);
+          if (response.data.success && response.data.data) {
+            sent.value = true;
+          }
+        } 
+        catch (error) {
+          console.error('Error checking application status:', error);
+        }
+      }
+    });
 
     // Reactive check for staff role
     const isStaff = computed(() => localStorage.getItem('userRole') === 'Staff');
@@ -54,7 +74,7 @@ export default {
         // Fetch the cat profile
         const catDataResponse = await api.get(`/catProfiles/cat-id/${props.catId}`);
         catData.value = catDataResponse.data.data; // Assuming response.data contains the profile data
-
+        
         // Fetch images associated with the cat profile
         const catImageResponse = await api.get(`/Image/${props.catId}/Cat`);
         if (catImageResponse.data.data) {
@@ -91,6 +111,7 @@ export default {
     });
 
     return {
+      sent,
       catData,
       formattedArrivalDate,
       isStaff

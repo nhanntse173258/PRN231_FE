@@ -9,8 +9,9 @@ import CatProfile from './components/CatProfile.vue';
 import CreateCat from './CreateCat.vue';
 import CreateAppointment from './CreateAppointment.vue';
 import CreateCatProfile from './CreateCatProfile.vue';
-import ViewApplication from './ViewApplication.vue';
 import AddContract from './AddContract.vue';
+import ViewApplications from './ViewApplication.vue';
+import MyApplication from './MyApplication.vue';
 
 const routes = [
   { path: '/', component: Home },
@@ -18,7 +19,8 @@ const routes = [
   { path: '/login', component: Login },
   { path: '/register', component: Register },
   { path: '/adopt/application/send/:id', component: AdoptApplication },
-  { path: '/adopt/application/', component: ViewApplication },
+  { path: '/adopt/application/', component: ViewApplications },
+  { path: '/adopt/application/user/:id', component: MyApplication, props: true },
   { path: '/cat-profile/:catId', component: CatProfile, props: true },
   { path: '/cat-profile/create/:id', component: CreateCatProfile, props: true},
   { path: '/cat/create', component: CreateCat },

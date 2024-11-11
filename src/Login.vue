@@ -26,9 +26,9 @@ import api from './api';
 export default {
   data() {
     return {
-      email: '',      // Bound to the email input
-      passwordHash: '',   // Bound to the password input
-      errorMessage: '' // To display error messages
+      email: '',
+      passwordHash: '',
+      errorMessage: ''
     };
   },
   methods: {
