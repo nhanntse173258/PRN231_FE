@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { jwtDecode } from 'jwt-decode';
 import api from './api';
 
 export default {
@@ -45,6 +46,9 @@ export default {
         // Store the token in localStorage (or Vuex store)
         localStorage.setItem('jwt', token);
 
+        var userRole = jwtDecode(token).role;
+        localStorage.setItem('userRole', userRole);
+
         // Redirect to a protected route after successful login
         this.$router.push('/dashboard');
 
@@ -69,12 +73,12 @@ export default {
 </style>
 
   
-  <style scoped>
+<style scoped>
   .login {
     max-width: 400px;
-    margin: auto;
+    margin: 2.5% auto;
     padding: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     border-radius: 8px;
   }
   

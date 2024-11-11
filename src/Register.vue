@@ -59,3 +59,37 @@
   };
   </script>
   
+  <style>
+  .error {
+    color: red;
+    margin-top: 10px;
+  }
+  </style>
+  
+    
+  <style scoped>
+    .register {
+      max-width: 400px;
+      margin: 2.5% auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    
+    form div {
+      margin-bottom: 15px;
+    }
+    
+    button {
+      padding: 10px;
+      background-color: #ffab00;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background-color: #e69500;
+    }
+    </style>
+    

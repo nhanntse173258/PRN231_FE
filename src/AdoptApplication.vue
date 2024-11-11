@@ -108,7 +108,7 @@
   <style scoped>
   .application-page {
     max-width: 400px;
-    margin: auto;
+    margin: 2.5% auto;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
