@@ -42,65 +42,65 @@
   export default {
       name: 'AdoptionApplicationPage',
       setup() {
-      const route = useRoute();
-      const router = useRouter();
+        const route = useRoute();
+        const router = useRouter();
 
-      const catId = parseInt(route.params.id); // Extracts catId from the route
-      const token = localStorage.getItem('jwt');
-      const message = ref('');
+        const catId = parseInt(route.params.id); // Extracts catId from the route
+        const token = localStorage.getItem('jwt');
+        const message = ref('');
 
-      let userId = null;
+        let userId = null;
 
-      if (token) {
-        try 
-        {
-          const decoded = jwtDecode(token);
-          userId = decoded.unique_name;
+        if (token) {
+          try 
+          {
+            const decoded = jwtDecode(token);
+            userId = decoded.unique_name;
+          } 
+          catch (error) 
+          {
+            console.error("Failed to decode token:", error);
+            message.value = 'Invalid or expired token. Please log in again.';
+            router.push('/login'); // Redirect to login if token is invalid
+          }
         } 
-        catch (error) 
-        {
-          console.error("Failed to decode token:", error);
-          message.value = 'Invalid or expired token. Please log in again.';
-          router.push('/login'); // Redirect to login if token is invalid
+        else {
+          message.value = 'Please log in to access this page.';
+          router.push('/login'); // Redirect to login if no token is found
         }
-      } 
-      else {
-        message.value = 'Please log in to access this page.';
-        router.push('/login'); // Redirect to login if no token is found
-      }
 
-      const applicationData = reactive({
-        userId: userId,
-        adoptionFee: 0,
-        applicationDate: new Date().toISOString().split('T')[0], // Default to today's date
-        adoptionDate: null,
-      });
+        const applicationData = reactive({
+          userId: userId,
+          adoptionFee: 0,
+          applicationDate: new Date().toISOString().split('T')[0], // Default to today's date
+          adoptionDate: null,
+        });
 
-      const submitApplication = async () => {
-        try {
-          const response = await api.post(`/adoptionApplications`, {
-            catId: catId,
-            adopterId: userId,
-            adoptionFee: applicationData.adoptionFee,
-            applicationDate: applicationData.applicationDate,
-            adoptionDate: applicationData.adoptionDate,
-          });
+        const submitApplication = async () => {
+          try {
+            const response = await api.post(`/adoptionApplications`, {
+              catId: catId,
+              adopterId: userId,
+              adoptionFee: applicationData.adoptionFee,
+              applicationDate: applicationData.applicationDate,
+              adoptionDate: applicationData.adoptionDate,
+            });
 
-          if (response.data.data) message.value = 'Application submitted successfully!';
-          console.log(response);
-        } catch (error) {
-          message.value = 'Failed to submit application. Please try again.';
-          console.error(error);
-        }
-      };
+            if (response.data.data) message.value = 'Application submitted successfully!';
+            console.log(response);
+          } catch (error) {
+            message.value = 'Failed to submit application. Please try again.';
+            console.error(error);
+          }
+        };
 
-      return {
-        catId,
-        userId,
-        applicationData,
-        submitApplication,
-        message,
-      };
+        return {
+          catId,
+          userId,
+          applicationData,
+          submitApplication,
+          message,
+        };
     },
   };
   </script>

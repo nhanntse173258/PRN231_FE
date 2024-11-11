@@ -6,6 +6,10 @@
         <router-link to="/adopt" class="cta-button">Adopt a Cat</router-link>
         <router-link v-if="isStaff" to="/cat/create" class="cta-button">Add a Cat</router-link>
         <router-link v-if="isStaff" to="/appointment/create" class="cta-button">Add a Appointment</router-link>
+        <div class="cats-buttons">
+          <router-link to="/adopt" class="cta-button">Adopt a Cat</router-link>
+          <router-link v-if="isStaff" to="/cat/create" class="cta-button">Add a Cat</router-link>
+        </div>
       </section>
   
       <section class="featured-cats">
@@ -55,7 +59,8 @@
 
             // Attach images to their respective cats based on entityId
             this.cats = this.cats.map(cat => {
-              const catImage = images.find(image => image.entityId === cat.catId && image.entityType === 'Cat');
+              var catImage = images.find(image => image.entityId === cat.catId && image.entityType === 'Cat' && image.isPrimary);
+              if (!catImage) catImage = images.find(image => image.entityId === cat.catId && image.entityType === 'Cat');
               cat.Image = catImage ? catImage.imageUrl : "placeholder.jpg"
               return {
                 ...cat
@@ -98,6 +103,10 @@
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+  }
+
+  .cats-buttons {
+    margin-top: 3%;
   }
   </style>
   

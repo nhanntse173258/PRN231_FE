@@ -50,7 +50,7 @@ export default {
         localStorage.setItem('userRole', userRole);
 
         // Redirect to a protected route after successful login
-        this.$router.push('/dashboard');
+        this.$router.push('/');
 
       } catch (error) {
         // Handle errors such as incorrect email/password

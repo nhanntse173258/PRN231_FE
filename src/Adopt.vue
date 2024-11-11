@@ -75,7 +75,8 @@ export default {
 
             // Attach images to their respective cats based on entityId
             this.cats = this.cats.map(cat => {
-              const catImage = images.find(image => image.entityId === cat.catId && image.entityType === 'Cat');
+              var catImage = images.find(image => image.entityId === cat.catId && image.entityType === 'Cat' && image.isPrimary);
+              if (!catImage) catImage = images.find(image => image.entityId === cat.catId && image.entityType === 'Cat');
               cat.Image = catImage ? catImage.imageUrl : "placeholder.jpg";
               return cat;
             });
