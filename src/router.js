@@ -7,6 +7,7 @@ import Register from './Register.vue';
 import AdoptApplication from './AdoptApplication.vue';
 import CatProfile from './components/CatProfile.vue';
 import CreateCat from './CreateCat.vue';
+import CreateCatProfile from './CreateCatProfile.vue';
 
 const routes = [
   { path: '/', component: Home },
@@ -15,6 +16,7 @@ const routes = [
   { path: '/register', component: Register },
   { path: '/adopt/application/:id', component: AdoptApplication },
   { path: '/cat-profile/:catId', component: CatProfile, props: true },
+  { path: '/cat-profile/create/:id', component: CreateCatProfile, props: true},
   { path: '/cat/create', component: CreateCat },
 ]
 

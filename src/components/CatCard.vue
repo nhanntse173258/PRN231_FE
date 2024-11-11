@@ -2,10 +2,14 @@
   <div class="cat-card">
     <img :src="cat.Image" alt="cat image" />
     <h3>{{ cat.name }}</h3>
-    <p>{{ cat.description || 'No description available.' }}</p>
-    <router-link :to="`/adopt/application/${cat.catId}`" class="adopt-button">Adopt Me</router-link>
-    <br>
-    <router-link :to="`/cat-profile/${cat.catId}`" class="view-profile-button">View Profile</router-link>
+    <p>Gender: {{ cat.gender || 'Unknown.' }}</p>
+    <p>{{ cat.age || 'Unknown.' }} year(s) old</p>
+
+    <div class="card-button">
+      <router-link :to="`/adopt/application/${cat.catId}`" class="adopt-button">Adopt Me</router-link>
+      <br>
+      <router-link :to="`/cat-profile/${cat.catId}`" class="view-profile-button">View Profile</router-link>
+    </div>
   </div>
 </template>
 
@@ -34,13 +38,21 @@ export default {
   height: auto;
 }
 
+.card-button {
+  margin-top: 2%;
+  display: block;
+}
+
 .adopt-button {
   background-color: #ffab00;
   color: white;
   padding: 5px 10px;
   text-decoration: none;
+  min-width: 100%;
 }
+
 .view-profile-button {
+  min-width: 100%;
   background-color: #ffab00;
   color: white;
   padding: 5px 10px;
