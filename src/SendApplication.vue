@@ -45,7 +45,7 @@
         const route = useRoute();
         const router = useRouter();
 
-        const catId = parseInt(route.params.id); // Extracts catId from the route
+        const catId = parseInt(route.params.id);
         const token = localStorage.getItem('jwt');
         const message = ref('');
 
@@ -77,20 +77,22 @@
         });
 
         const submitApplication = async () => {
-          try {
-            const response = await api.post(`/adoption-applications`, {
-              catId: catId,
-              adopterId: userId,
-              adoptionFee: applicationData.adoptionFee,
-              applicationDate: applicationData.applicationDate,
-              adoptionDate: applicationData.adoptionDate,
-            });
+          if (window.confirm("Send adoption application for this cat?")) {
+            try {
+              const response = await api.post(`/adoption-applications`, {
+                catId: catId,
+                adopterId: userId,
+                adoptionFee: applicationData.adoptionFee,
+                applicationDate: applicationData.applicationDate,
+                adoptionDate: applicationData.adoptionDate,
+              });
 
-            message.value = 'Application submitted successfully!';
-            console.log(response);
-          } catch (error) {
-            message.value = 'Failed to submit application. Please try again.';
-            console.error(error);
+              message.value = 'Application submitted successfully!';
+              console.log(response);
+            } catch (error) {
+              message.value = 'Failed to submit application. Please try again.';
+              console.error(error);
+            }
           }
         };
 

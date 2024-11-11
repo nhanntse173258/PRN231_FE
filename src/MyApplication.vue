@@ -14,9 +14,6 @@
         
         <p v-if="application.applicationStatus === 'Pending'">
           Status: Pending
-          <button @click="approveApplication(application.applicationId)">
-            Approve
-          </button>
         </p>
         <p style="color:green" v-if="application.applicationStatus === 'Approved'">
           Status: Approved
@@ -24,28 +21,25 @@
         <p style="color:red" v-if="application.applicationStatus === 'Rejected'">
           Status: Rejected
         </p>
+
+        <button @click="deleteApplication(application.applicationId)" class="btn-delete">Delete</button>
       </div>
-  
-      <!-- Pagination Controls -->
-      <div class="pagination">
-        <button @click="changePage(currentPage - 1)" :disabled="currentPage <= 1">Previous</button>
-        <span>Page {{ currentPage }} of {{ totalPages }}</span>
-        <button @click="changePage(currentPage + 1)" :disabled="currentPage >= totalPages">Next</button>
-      </div>
+
     </div>
-  </template>
+</template>
   
   <script>
-  import { ref, onMounted } from 'vue';
-  import api from './api';
+    import { ref, onMounted } from 'vue';
+    import api from './api';
+    import { useRoute, useRouter } from 'vue-router';
   
   export default {
-    name: 'AdoptionApplications',
+    name: 'MyApplications',
     data() {
       return {
         applications: [],
         currentPage: 1,
-        pageSize: 5,
+        pageSize: 100,
         totalPages: 1,
         totalApplications: 0 // Store the total count of applications
       };
@@ -54,13 +48,13 @@
       // Fetch total applications count to calculate totalPages
       async fetchTotalApplications() {
         try {
-          const response = await api.get('/adoption-applications', {
-            params: { pageNumber: 1, pageSize: 10000 } // Request a large page size to fetch all applications
-          });
+            const route = useRoute();
+            const userId = parseInt(route.params.id);
+            const response = await api.get(`/adoption-applications/by-adopter/${userId}`);
 
-          this.totalApplications = response.data.data.length;
-          this.totalPages = Math.ceil(this.totalApplications / this.pageSize); // Calculate total pages
-          this.fetchApplications(); // Fetch applications for the current page
+            this.totalApplications = response.data.data.length;
+            this.totalPages = Math.ceil(this.totalApplications / this.pageSize); // Calculate total pages
+            this.fetchApplications(); // Fetch applications for the current page
         } catch (error) {
           console.error('Error fetching total applications:', error);
         }
@@ -78,19 +72,6 @@
         }
       },
   
-      // Approve adoption application
-      async approveApplication(applicationId) {
-        if (window.confirm("Approve this application? This will automatically reject all other applications for this cat")) {
-          try {
-            await api.put(`/adoption-applications/approve/${applicationId}`);
-            this.fetchApplications();
-            window.alert("Application approved!");
-          } catch (error) {
-            console.error('Error approving application:', error);
-          }
-        }
-      },
-  
       // Change page for pagination
       changePage(page) {
         if (page >= 1 && page <= this.totalPages) {
@@ -103,14 +84,27 @@
       formatDate(date) {
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
         return new Date(date).toLocaleDateString(undefined, options);
-      }
+      },
+
+      async deleteApplication(applicationId) {
+        if (window.confirm("Are you sure to want to delete this application")) {
+            try {
+                const result = await api.delete(`/adoption-applications/${applicationId}`);
+                this.fetchApplications();
+                window.alert(`Application deleted!`);
+            }
+            catch (error)
+            {
+                console.error('Error deleting applications:', error);
+            }
+        }
+      },
     },
     mounted() {
-        if (localStorage.getItem('userRole') != 'Staff') this.$router.push('/home');
       this.fetchTotalApplications(); // Fetch total applications initially to calculate total pages
     }
   };
-  </script>
+</script>
   
   <style scoped>
   .applications {
@@ -152,6 +146,11 @@
     padding: 1%;
     margin-left: 1%;
     text-decoration: underline;
+  }
+
+  .btn-delete {
+    background-color: rgb(255, 64, 64);
+    padding: 1%
   }
   </style>
   
