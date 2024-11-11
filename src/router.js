@@ -5,13 +5,15 @@ import Adopt from './Adopt.vue'
 import Login from './Login.vue';
 import Register from './Register.vue';
 import AdoptApplication from './AdoptApplication.vue';
+import CatProfile from './components/CatProfile.vue';
 
 const routes = [
   { path: '/', component: Home },
   { path: '/adopt', component: Adopt },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
-  { path: '/adopt/application/:id', component: AdoptApplication }
+  { path: '/adopt/application/:id', component: AdoptApplication },
+  { path: '/cat-profile/:catId', component: CatProfile, props: true } 
 ]
 
 const router = createRouter({
