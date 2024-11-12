@@ -1,59 +1,44 @@
 <template>
     <div class="applications">
-      <h1>Pending Adoption Applications</h1>
+      <h1>My Applications</h1>
       
       <div v-if="applications.length === 0">No applications available.</div>
       
       <div v-for="application in applications" :key="application.applicationId" class="application-card">
-        <p><strong>Cat ID:</strong> {{ application.catId }} 
-          <router-link class="cat-profile" :to="`/cat-profile/${application.catId}`">Profile</router-link>
-        </p> 
-        <p><strong>Adopter ID:</strong> {{ application.adopterId }}</p>
+        <p><strong>Cat name:</strong> {{ application.catName }} </p> 
         <p><strong>Application Date:</strong> {{ formatDate(application.applicationDate) }}</p>
+        <p><strong>Adoption Date:</strong> {{ formatDate(application.adoptionDate) }}</p>
         <p><strong>Adoption Fee:</strong> {{ application.adoptionFee }}</p>
         
         <p v-if="application.applicationStatus === 'Pending'">
           Status: Pending
-          <button @click="approveApplication(application.applicationId)">
-            Approve
-          </button>
         </p>
         <p style="color:green" v-if="application.applicationStatus === 'Approved'">
           Status: Approved
-          <br>
-          <router-link style="text-decoration: underline;" :to="`/appointment/create?applicationId=${application.applicationId}`">
-            Make Appointment
-          </router-link>
-          <br>
-          <router-link style="color: orange; text-decoration: underline;" :to="`/contract/create?applicationId=${application.applicationId}`">
-            Create Contract
-          </router-link>
         </p>
         <p style="color:red" v-if="application.applicationStatus === 'Rejected'">
           Status: Rejected
         </p>
+
+        <button v-if="application.applicationStatus !== 'Approved'" @click="deleteApplication(application.applicationId)" class="btn-delete">Delete</button>
       </div>
-  
-      <!-- Pagination Controls -->
-      <div class="pagination">
-        <button @click="changePage(currentPage - 1)" :disabled="currentPage <= 1">◄</button>
-        <span>Page {{ currentPage }} of {{ totalPages }}</span>
-        <button @click="changePage(currentPage + 1)" :disabled="currentPage >= totalPages">►</button>
-      </div>
+
     </div>
-  </template>
+</template>
   
   <script>
-  import { ref, onMounted } from 'vue';
-  import api from './api';
+    import { ref, onMounted } from 'vue';
+    import api from './api';
+    import { useRoute, useRouter } from 'vue-router';
   
   export default {
-    name: 'AdoptionApplications',
+    name: 'MyApplications',
     data() {
       return {
+        userId: null,
         applications: [],
         currentPage: 1,
-        pageSize: 5,
+        pageSize: 100,
         totalPages: 1,
         totalApplications: 0 // Store the total count of applications
       };
@@ -62,13 +47,14 @@
       // Fetch total applications count to calculate totalPages
       async fetchTotalApplications() {
         try {
-          const response = await api.get('/adoption-applications', {
-            params: { pageNumber: 1, pageSize: 10000 } // Request a large page size to fetch all applications
-          });
+            const route = useRoute();
+            const userId = parseInt(route.params.id);
+            this.userId = userId;
+            const response = await api.get(`/adoption-applications/by-adopter/${userId}`);
 
-          this.totalApplications = response.data.data.length;
-          this.totalPages = Math.ceil(this.totalApplications / this.pageSize); // Calculate total pages
-          this.fetchApplications(); // Fetch applications for the current page
+            this.totalApplications = response.data.data.length;
+            this.totalPages = Math.ceil(this.totalApplications / this.pageSize); // Calculate total pages
+            this.fetchApplications(); // Fetch applications for the current page
         } catch (error) {
           console.error('Error fetching total applications:', error);
         }
@@ -77,25 +63,12 @@
       // Fetch applications for the current page
       async fetchApplications() {
         try {
-          const response = await api.get('/adoption-applications', {
+          const response = await api.get(`/adoption-applications/by-adopter/${this.userId}`, {
             params: { pageNumber: this.currentPage, pageSize: this.pageSize }
           });
           this.applications = response.data.data; // Use the 'data' field from the API response
         } catch (error) {
           console.error('Error fetching applications:', error);
-        }
-      },
-  
-      // Approve adoption application
-      async approveApplication(applicationId) {
-        if (window.confirm("Approve this application? This will automatically reject all other applications for this cat")) {
-          try {
-            await api.put(`/adoption-applications/approve/${applicationId}`);
-            this.fetchApplications();
-            window.alert("Application approved!");
-          } catch (error) {
-            console.error('Error approving application:', error);
-          }
         }
       },
   
@@ -110,15 +83,28 @@
       // Format date for display
       formatDate(date) {
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        return new Date(date).toLocaleDateString(undefined, options);
-      }
+        return date ? new Date(date).toLocaleDateString(undefined, options) : "Undetermined";
+      },
+
+      async deleteApplication(applicationId) {
+        if (window.confirm("Are you sure to want to delete this application")) {
+            try {
+                const result = await api.delete(`/adoption-applications/${applicationId}`);
+                this.fetchApplications();
+                window.alert(`Application deleted!`);
+            }
+            catch (error)
+            {
+                console.error('Error deleting applications:', error);
+            }
+        }
+      },
     },
     mounted() {
-        if (localStorage.getItem('userRole') != 'Staff') this.$router.push('/home');
       this.fetchTotalApplications(); // Fetch total applications initially to calculate total pages
     }
   };
-  </script>
+</script>
   
   <style scoped>
   .applications {
@@ -160,6 +146,11 @@
     padding: 1%;
     margin-left: 1%;
     text-decoration: underline;
+  }
+
+  .btn-delete {
+    background-color: rgb(255, 64, 64);
+    padding: 1%
   }
   </style>
   
