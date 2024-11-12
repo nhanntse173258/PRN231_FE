@@ -26,6 +26,8 @@ const routes = [
   { path: '/cat-profile/:catId', component: CatProfile, props: true },
   { path: '/cat-profile/create/:id', component: CreateCatProfile, props: true},
   { path: '/cat/create', component: CreateCat },
+  { path: '/adopter-history', component: AdopterHistory },
+  {path: '/upload-image', component: TestImageUploads},
   { path: '/appointment/create', component: CreateAppointment },
   { path: '/contract/create', component: AddContract },
   { path: '/QR/create', component: QRCode },

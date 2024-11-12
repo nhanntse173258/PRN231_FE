@@ -7,7 +7,11 @@
         <li><router-link to="/adopt">Adopt a Cat</router-link></li>
         <li><router-link to="/about">About Us</router-link></li>
         <li><router-link to="/contact">Contact</router-link></li>
+        <li><router-link to="/upload-image">Upload Image</router-link></li>
         <!-- Check if the user is logged in -->
+        <li v-if="isLoggedIn">
+          <router-link to="/adopter-history">Adopter History</router-link> <!-- New link -->
+        </li>
         <li v-if="isLoggedIn">
           <button @click="logout">Logout</button>
         </li>
