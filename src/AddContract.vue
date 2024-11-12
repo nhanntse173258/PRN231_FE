@@ -1,28 +1,28 @@
 <template>
-  <div>
+  <div class="contract-form">
     <h1>Create Adoption Contract</h1>
     <form @submit.prevent="createAdoptionContract">
-      <div>
+      <div class="form-group">
         <label for="applicationId">Application ID:</label>
         <input type="number" v-model="form.applicationId" required />
       </div>
 
-      <div>
+      <div class="form-group">
         <label for="contractFile">Contract File (optional):</label>
         <input type="file" @change="handleImageChange" />
       </div>
 
-      <div>
+      <div class="form-group">
         <label for="contractText">Contract Text:</label>
         <textarea v-model="form.contractText" required></textarea>
       </div>
 
-      <div>
+      <div class="form-group">
         <label for="signedDate">Signed Date:</label>
         <input type="date" v-model="form.signedDate" required />
       </div>
 
-      <div>
+      <div class="form-group">
         <label for="witness">Witness:</label>
         <input type="text" v-model="form.witness" required />
       </div>
@@ -42,13 +42,14 @@
 
 <script>
 import api from "./api"; // Assuming api.js is configured correctly
+import { useRoute } from "vue-router";
 
 export default {
   data() {
     return {
       form: {
         contractId: '',  // Empty, not needed to send initially
-        applicationId: null,
+        applicationId: parseInt(useRoute().query.applicationId),
         contractFile: '',
         contractText: '',
         signedDate: '',
@@ -65,7 +66,12 @@ export default {
       this.images = Array.from(event.target.files); // Convert FileList to an array
     },
 
+    setup() {
+      if (localStorage.getItem('userRole') !== 'Staff') this.$router.push('/home');
+    },
+
     async createAdoptionContract() {
+      if (!window.confirm("Create adoption contract for this application?")) return;
       this.successMessage = '';
       this.errorMessage = '';
 
@@ -133,13 +139,58 @@ export default {
 </script>
 
 <style scoped>
-.success {
-  color: green;
-  margin-top: 20px;
-}
+  .contract-form {
+    max-width: 400px;
+    margin: 2.5% auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
 
-.error {
-  color: red;
-  margin-top: 20px;
-}
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+
+  input[disabled] {
+    background-color: #f0f0f0;
+  }
+
+  button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #45a049;
+  }
+
+  p {
+    margin-top: 15px;
+    color: green;
+  }
+
+  .success {
+    color: green;
+    margin-top: 20px;
+  }
+
+  .error {
+    color: red;
+    margin-top: 20px;
+  }
 </style>
