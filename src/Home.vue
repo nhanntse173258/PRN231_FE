@@ -12,7 +12,6 @@
           <router-link v-if="isStaff" to="/contract/create" class="cta-button">Add a Contract</router-link>
           <router-link v-else-if="userId" :to="`/adopt/application/user/${userId}`" class="cta-button">My Applications</router-link>
         </div>
-        <router-link to="/QR/create" class="cta-button">QR</router-link>
         <router-link to="/Donation" class="cta-button">Donation</router-link>
       </section>
   

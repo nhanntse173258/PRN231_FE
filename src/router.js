@@ -14,6 +14,8 @@ import ViewApplications from './ViewApplication.vue';
 import MyApplication from './MyApplication.vue';
 import QRCode from './QRCode.vue';
 import Donation from './Donation.vue';
+import AdopterHistory from './AdopterHistory.vue';
+import TestImageUploads from './TestImageUpload.vue';
 
 const routes = [
   { path: '/', component: Home },
