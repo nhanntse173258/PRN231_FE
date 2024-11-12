@@ -6,8 +6,8 @@
       
       <div v-for="application in applications" :key="application.applicationId" class="application-card">
         <p><strong>Cat name:</strong> {{ application.catName }} </p> 
-        <p><strong>Adopter ID:</strong> {{ application.adopterId }}</p>
         <p><strong>Application Date:</strong> {{ formatDate(application.applicationDate) }}</p>
+        <p><strong>Adoption Date:</strong> {{ formatDate(application.adoptionDate) }}</p>
         <p><strong>Adoption Fee:</strong> {{ application.adoptionFee }}</p>
         
         <p v-if="application.applicationStatus === 'Pending'">
@@ -20,7 +20,7 @@
           Status: Rejected
         </p>
 
-        <button @click="deleteApplication(application.applicationId)" class="btn-delete">Delete</button>
+        <button v-if="application.applicationStatus !== 'Approved'" @click="deleteApplication(application.applicationId)" class="btn-delete">Delete</button>
       </div>
 
     </div>
@@ -83,7 +83,7 @@
       // Format date for display
       formatDate(date) {
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        return new Date(date).toLocaleDateString(undefined, options);
+        return date ? new Date(date).toLocaleDateString(undefined, options) : "Undetermined";
       },
 
       async deleteApplication(applicationId) {
