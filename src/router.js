@@ -12,6 +12,8 @@ import CreateCatProfile from './CreateCatProfile.vue';
 import AddContract from './AddContract.vue';
 import ViewApplications from './ViewApplication.vue';
 import MyApplication from './MyApplication.vue';
+import QRCode from './QRCode.vue';
+import Donation from './Donation.vue';
 
 const routes = [
   { path: '/', component: Home },
@@ -26,6 +28,8 @@ const routes = [
   { path: '/cat/create', component: CreateCat },
   { path: '/appointment/create', component: CreateAppointment },
   { path: '/contract/create', component: AddContract },
+  { path: '/QR/create', component: QRCode },
+  { path: '/Donation', component: Donation },
 ]
 
 const router = createRouter({
