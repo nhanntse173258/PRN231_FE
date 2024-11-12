@@ -20,6 +20,14 @@
         </p>
         <p style="color:green" v-if="application.applicationStatus === 'Approved'">
           Status: Approved
+          <br>
+          <router-link style="text-decoration: underline;" :to="`/appointment/create?applicationId=${application.applicationId}`">
+            Make Appointment
+          </router-link>
+          <br>
+          <router-link style="color: orange; text-decoration: underline;" :to="`/contract/create?applicationId=${application.applicationId}`">
+            Create Contract
+          </router-link>
         </p>
         <p style="color:red" v-if="application.applicationStatus === 'Rejected'">
           Status: Rejected
@@ -28,9 +36,9 @@
   
       <!-- Pagination Controls -->
       <div class="pagination">
-        <button @click="changePage(currentPage - 1)" :disabled="currentPage <= 1">Previous</button>
+        <button @click="changePage(currentPage - 1)" :disabled="currentPage <= 1">◄</button>
         <span>Page {{ currentPage }} of {{ totalPages }}</span>
-        <button @click="changePage(currentPage + 1)" :disabled="currentPage >= totalPages">Next</button>
+        <button @click="changePage(currentPage + 1)" :disabled="currentPage >= totalPages">►</button>
       </div>
     </div>
   </template>

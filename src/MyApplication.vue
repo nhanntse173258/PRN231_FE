@@ -1,15 +1,13 @@
 <template>
     <div class="applications">
-      <h1>Pending Adoption Applications</h1>
+      <h1>My Applications</h1>
       
       <div v-if="applications.length === 0">No applications available.</div>
       
       <div v-for="application in applications" :key="application.applicationId" class="application-card">
-        <p><strong>Cat ID:</strong> {{ application.catId }} 
-          <router-link class="cat-profile" :to="`/cat-profile/${application.catId}`">Profile</router-link>
-        </p> 
-        <p><strong>Adopter ID:</strong> {{ application.adopterId }}</p>
+        <p><strong>Cat name:</strong> {{ application.catName }} </p> 
         <p><strong>Application Date:</strong> {{ formatDate(application.applicationDate) }}</p>
+        <p><strong>Adoption Date:</strong> {{ formatDate(application.adoptionDate) }}</p>
         <p><strong>Adoption Fee:</strong> {{ application.adoptionFee }}</p>
         
         <p v-if="application.applicationStatus === 'Pending'">
@@ -22,7 +20,7 @@
           Status: Rejected
         </p>
 
-        <button @click="deleteApplication(application.applicationId)" class="btn-delete">Delete</button>
+        <button v-if="application.applicationStatus !== 'Approved'" @click="deleteApplication(application.applicationId)" class="btn-delete">Delete</button>
       </div>
 
     </div>
@@ -37,6 +35,7 @@
     name: 'MyApplications',
     data() {
       return {
+        userId: null,
         applications: [],
         currentPage: 1,
         pageSize: 100,
@@ -50,6 +49,7 @@
         try {
             const route = useRoute();
             const userId = parseInt(route.params.id);
+            this.userId = userId;
             const response = await api.get(`/adoption-applications/by-adopter/${userId}`);
 
             this.totalApplications = response.data.data.length;
@@ -63,7 +63,7 @@
       // Fetch applications for the current page
       async fetchApplications() {
         try {
-          const response = await api.get('/adoption-applications', {
+          const response = await api.get(`/adoption-applications/by-adopter/${this.userId}`, {
             params: { pageNumber: this.currentPage, pageSize: this.pageSize }
           });
           this.applications = response.data.data; // Use the 'data' field from the API response
@@ -83,7 +83,7 @@
       // Format date for display
       formatDate(date) {
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        return new Date(date).toLocaleDateString(undefined, options);
+        return date ? new Date(date).toLocaleDateString(undefined, options) : "Undetermined";
       },
 
       async deleteApplication(applicationId) {
