@@ -3,12 +3,13 @@
       <section class="hero">
         <h1>Welcome to Cat Adoption</h1>
         <p>Find your perfect feline friend today!</p>
-        <router-link v-if="isStaff" to="/appointment/create" class="cta-button">Add a Appointment</router-link>
-        <router-link v-if="isStaff" to="/contract/create" class="cta-button">Add a Contract</router-link>
+
         <div class="cats-buttons">
           <router-link to="/adopt" class="cta-button">Adopt a Cat</router-link>
           <router-link v-if="isStaff" to="/cat/create" class="cta-button">Add a Cat</router-link>
           <router-link v-if="isStaff" to="/adopt/application" class="cta-button">View Applications</router-link>
+          <router-link v-if="isStaff" to="/appointment/create" class="cta-button">Add an Appointment</router-link>
+          <router-link v-if="isStaff" to="/contract/create" class="cta-button">Add a Contract</router-link>
           <router-link v-else-if="userId" :to="`/adopt/application/user/${userId}`" class="cta-button">My Applications</router-link>
         </div>
       </section>
@@ -111,7 +112,7 @@
   }
 
   .cats-buttons {
-    margin-top: 3%;
+    margin-top: 4%;
   }
   </style>
   
